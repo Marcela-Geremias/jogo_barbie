@@ -1,0 +1,28 @@
+/* Estilo para o terreno */
+.terreno {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #333;
+    display: inline-block;
+  }
+  
+  .asfalto {
+    background-color: #4d4d4d; /* Cinza escuro */
+  }
+  
+  .terra {
+    background-color: #8b4513; /* Marrom */
+  }
+  
+  .grama {
+    background-color: #228b22; /* Verde */
+  }
+  
+  .paralelepipedo {
+    background-color: #d3d3d3; /* Cinza claro */
+  }
+  
+  .edificio {
+    background-color: #ff8c00; /* Laranja */
+  }
+  
