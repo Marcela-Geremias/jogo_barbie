@@ -1,54 +1,51 @@
-/* Estilo geral do corpo da página */
+/* Estilo geral */
 body {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
-    background-color: #ffe4e1; /* Cor de fundo rosa claro */
-    font-family: 'Comic Sans MS', cursive, sans-serif; /* Fonte divertida */
-    position: relative;
+    background-color: #ffe4e1;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+/* Container principal centralizado */
+#container {
+    display: flex;
+    align-items: center;
 }
 
 /* Estilo do canvas */
 canvas {
-    border: 2px solid #ff69b4; /* Borda rosa para o canvas */
-    box-shadow: 0 0 15px rgba(255, 105, 180, 0.5); /* Efeito de sombra */
+    border: 2px solid #ff69b4;
+    box-shadow: 0 0 15px rgba(255, 105, 180, 0.5);
 }
 
-/* Painel de informações */
-#infoPanel {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background-color: #ffb6c1; /* Fundo rosa mais escuro */
-    border: 2px solid #ff69b4; /* Borda rosa */
-    padding: 15px;
+/* Painel direito */
+#rightPanel {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: #ffb6c1;
+    border: 2px solid #ff69b4;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
+    padding: 20px;
+    margin-left: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-size: 20px;
+    color: #ff1493;
 }
 
-/* Estilo para o custo da maquiagem */
-#custoMaquiagem {
+/* Estilo para custo e painel de amigos */
+#custoMaquiagem, #painelAmigos, #timer {
     font-size: 20px;
-    color: #ff1493; /* Rosa brilhante */
+    color: #ff1493;
     margin-bottom: 10px;
 }
 
-/* Estilo para o painel de amigos sorteados */
-#painelAmigos {
-    font-size: 20px;
-    color: #ff69b4; /* Rosa mais suave */
-}
-
-#painelAmigos::before {
-    content: "👑 "; /* Ícone de coroa antes do texto */
-}
-
-/* Texto dos amigos sorteados */
 #painelAmigos span {
     display: inline-block;
     margin-right: 10px;
-    color: #1e90ff; /* Azul para destacar os nomes */
+    color: #1e90ff;
     font-weight: bold;
 }

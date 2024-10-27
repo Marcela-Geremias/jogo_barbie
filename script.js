@@ -110,9 +110,9 @@ function sortearAmigos() {
 
 // Função A* para encontrar a rota de menor custo
 function aStar(start, goal, tabuleiro) {
-    const openSet = new Set([JSON.stringify(start)]);
-    const closedSet = new Set();
-    const gScore = {};
+    const openSet = new Set([JSON.stringify(start)]); //Conj. de nós a serem explorados. Inicia no ponto de partida
+    const closedSet = new Set(); //Conj. de nós já explorados
+    const gScore = {}; 
     const fScore = {};
     const cameFrom = {};
 
@@ -179,28 +179,50 @@ function reconstructPath(cameFrom, current) {
 }
 // Função para mover a Barbie e desenhar o caminho, visitando todos os amigos na rota de menor custo,
 // mas voltando para casa assim que encontrar os três sorteados
+// Variáveis para o cronômetro
+let tempoInicial;
+let intervaloCronometro;
+
+// Função para iniciar o cronômetro
+function iniciarCronometro() {
+    tempoInicial = Date.now();
+    intervaloCronometro = setInterval(atualizarCronometro, 1000);
+}
+
+// Função para atualizar o cronômetro no front-end
+function atualizarCronometro() {
+    const tempoAtual = Math.floor((Date.now() - tempoInicial) / 1000); // Tempo em segundos
+    document.getElementById('timer').innerText = `⏱ Tempo de execução: ${tempoAtual} segundos`;
+}
+
+// Função para parar o cronômetro
+function pararCronometro() {
+    clearInterval(intervaloCronometro);
+    const tempoTotal = Math.floor((Date.now() - tempoInicial) / 1000);
+    document.getElementById('timer').innerText = `⏱ Tempo total: ${tempoTotal} segundos`;
+}
+
+// Modifique a função moverBarbie para iniciar e parar o cronômetro
 async function moverBarbie() {
+    iniciarCronometro(); // Inicia o cronômetro ao começar o movimento da Barbie
+
     const tabuleiro = await carregarTabuleiro();
     let posicaoAtual = [...posicaoBarbie];
-    let amigosVisitados = 0; // Contador de amigos sorteados encontrados
-    const amigosRestantes = [...posicoesAmigos]; // Barbie percorre todos os amigos
+    let amigosVisitados = 0;
+    const amigosRestantes = [...posicoesAmigos];
 
     while (amigosRestantes.length > 0) {
-        // Encontrar o próximo amigo mais próximo
         let menorCusto = Infinity;
         let amigoMaisProximo = null;
         let melhorCaminho = null;
 
-        // Recalcula a rota para cada amigo restante
         for (const amigo of amigosRestantes) {
             const caminho = aStar(posicaoAtual, amigo, tabuleiro);
             if (caminho) {
-                // Calcula o custo do caminho
                 const custoCaminho = caminho.reduce((total, [x, y]) => {
                     return total + custosTerreno[tabuleiro[x][y]];
                 }, 0);
 
-                // Atualiza o amigo mais próximo se o custo for menor
                 if (custoCaminho < menorCusto) {
                     menorCusto = custoCaminho;
                     amigoMaisProximo = amigo;
@@ -209,35 +231,30 @@ async function moverBarbie() {
             }
         }
 
-        // Se encontrou um caminho para o amigo mais próximo
         if (melhorCaminho) {
             for (const passo of melhorCaminho) {
-                await new Promise(r => setTimeout(r, 200));  // Pausa para a animação
-                desenharTabuleiro();  // Redesenha o tabuleiro
-                desenharAmigos();     // Mantém os amigos visíveis
+                await new Promise(r => setTimeout(r, 100));
+                desenharTabuleiro();
+                desenharAmigos();
                 posicaoAtual = passo;
-                desenharBarbie(passo[0], passo[1]);  // Desenha a Barbie em cada passo
+                desenharBarbie(passo[0], passo[1]);
 
-                // Atualiza o custo total
                 const terrenoAtual = tabuleiro[passo[0]][passo[1]];
                 custoTotal += custosTerreno[terrenoAtual];
-                document.getElementById('custoMaquiagem').innerText = `Custo da maquiagem: ${custoTotal}`; // Atualiza o custo no HTML
+                document.getElementById('custoMaquiagem').innerText = ` 💄 Custo da maquiagem: ${custoTotal}`;
             }
 
-            // Verifica se o amigo visitado é um dos sorteados
             if (amigosSorteados.some(amigo => amigo[0] === amigoMaisProximo[0] && amigo[1] === amigoMaisProximo[1])) {
-                amigosVisitados += 1; // Conta o amigo sorteado visitado
+                amigosVisitados += 1;
             }
 
-            // Remove o amigo visitado da lista, independentemente de ser sorteado ou não
             const index = amigosRestantes.indexOf(amigoMaisProximo);
             if (index > -1) {
-                amigosRestantes.splice(index, 1); // Remove o amigo visitado
+                amigosRestantes.splice(index, 1);
             }
 
-            // Se a Barbie encontrou os três amigos sorteados, volta para casa
             if (amigosVisitados >= 3) {
-                break; // Sai do loop após encontrar os três amigos sorteados
+                break;
             }
         } else {
             console.log('Nenhum caminho foi encontrado para o próximo amigo.');
@@ -245,22 +262,22 @@ async function moverBarbie() {
         }
     }
 
-    // Barbie retorna para casa após encontrar os três amigos sorteados
     const caminhoDeVolta = aStar(posicaoAtual, posicaoBarbie, tabuleiro);
     if (caminhoDeVolta) {
         for (const passo of caminhoDeVolta) {
-            await new Promise(r => setTimeout(r, 200));  // Pausa para a animação
-            desenharTabuleiro();  // Redesenha o tabuleiro
-            desenharAmigos();     // Mantém os amigos visíveis
+            await new Promise(r => setTimeout(r, 100));
+            desenharTabuleiro();
+            desenharAmigos();
             posicaoAtual = passo;
-            desenharBarbie(passo[0], passo[1]);  // Desenha a Barbie em cada passo
+            desenharBarbie(passo[0], passo[1]);
 
-            // Atualiza o custo total
             const terrenoAtual = tabuleiro[passo[0]][passo[1]];
             custoTotal += custosTerreno[terrenoAtual];
-            document.getElementById('custoMaquiagem').innerText = `Custo da maquiagem: ${custoTotal}`; // Atualiza o custo no HTML
+            document.getElementById('custoMaquiagem').innerText = ` 💄 Custo da maquiagem: ${custoTotal}`;
         }
     }
+
+    pararCronometro(); // Para o cronômetro quando a Barbie completa a rota
 
     alert(`Custo total da rodada: ${custoTotal}`);
 }
