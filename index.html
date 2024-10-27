@@ -7,11 +7,17 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="infoPanel">
-        <div id="custoMaquiagem">💄 Custo da maquiagem: 0</div> <!-- Exibe o custo da maquiagem -->
-        <div id="painelAmigos">💖 Amigos sorteados: </div> <!-- Exibe os amigos sorteados -->
+    <div id="container">
+        <!-- Canvas do jogo -->
+        <canvas id="gameCanvas" width="840" height="840"></canvas>
+        
+        <!-- Painel direito com as informações -->
+        <div id="rightPanel">
+            <div id="custoMaquiagem">💄 Custo da maquiagem: 0</div>
+            <div id="painelAmigos">💖 Amigos sorteados:</div>
+        </div>
     </div>
-    <canvas id="gameCanvas" width="840" height="840"></canvas>
+    
     <script src="script.js"></script>
 </body>
 </html>
