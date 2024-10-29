@@ -202,7 +202,6 @@ function pararCronometro() {
     document.getElementById('timer').innerText = `⏱ Tempo total: ${tempoTotal} segundos`;
 }
 
-// Modifique a função moverBarbie para iniciar e parar o cronômetro
 async function moverBarbie() {
     iniciarCronometro(); // Inicia o cronômetro ao começar o movimento da Barbie
 
